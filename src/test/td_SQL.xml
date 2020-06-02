@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="test">
+	<select id="selectDayList" 
+			parameterType="traveldiary/td/dto/DayListViewDTO.java"
+			resultType="">
+	</select>
+
+	<select id="selectmDiaryList"
+			parameterType="Integer"
+			resultType="traveldiary/td/dto/DiaryDTO.java">
+		<![CDATA[
+			SELECT
+				MEMBER_NUM,
+				DIARY_VOLUM,
+				DIARY_TITLE,
+				TIME,
+				START_DAY,
+				END_DAY,
+				LOCATION_CODE,
+				DIARY_COVER,
+				P_CODE
+			FROM
+				DIARY
+			WHERE MEMBER_NUM = #{mnum}
+		]]>
+	</select>
+	
+	<select id="test"
+			parameterType="String"
+			resultType="traveldiary/td/dto/MemberDTO.java">
+		<![CDATA[
+			SELECT
+				MEMBER_NUM,
+				MEMBER_NAME,
+				MEMBER_ID,
+				MEMBER_PW,
+				MEMBER_PWINFO,
+				MEMBER_PWAN,
+				MEMBER_EMAIL
+			FROM
+				MEMBER
+			WHERE
+				MEMBER ID = #{m}
+		]]>		
+	</select>
+			
+		
+
+</mapper>

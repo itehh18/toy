@@ -1,0 +1,386 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="td">
+
+	<select id="selectMember"
+			parameterType="string"
+			resultType="traveldiary.td.dto.MemberDTO">
+		<![CDATA[
+			SELECT
+				MEMBER_NUM,
+				MEMBER_NAME,
+				MEMBER_ID,
+				MEMBER_PW,
+				MEMBER_PWINFO,
+				MEMBER_PWAN,
+				MEMBER_EMAIL
+			FROM
+				MEMBER
+			WHERE
+				MEMBER_ID = #{mid} AND DEL_FLAG = 'n'
+				
+		]]>		
+	</select>
+	
+	
+	<select id="selectmDiaryList"
+			parameterType="hashmap"
+			resultMap="diary">
+		<![CDATA[
+			SELECT
+				member_num,
+				diary_volum,
+				diary_title,
+				time,
+				start_day,
+				end_day,
+				loc_detail,
+				location_code,
+				diary_cover,
+				p_code
+			FROM
+				DIARY
+			WHERE
+				member_num = #{mnum} AND del_flag = 'n'
+			LIMIT #{pnum}, #{cnum}
+		]]>		
+	</select>
+	
+		<select id="selectinfoDiaryList"
+			parameterType="integer"
+			resultMap="diary">
+		<![CDATA[
+			SELECT
+				member_num,
+				diary_volum,
+				diary_title,
+				time,
+				start_day,
+				end_day,
+				location_code,
+				diary_cover,
+				p_code
+			FROM
+				DIARY
+			WHERE
+				member_num = #{mnum} AND del_flag = 'n'
+		]]>		
+	</select>
+	
+	<select id="selectmDiaryLCount"
+			parameterType="string"
+			resultType="int">
+		<![CDATA[
+			SELECT
+				COUNT(*)
+			FROM
+				DIARY
+			WHERE
+				MEMBER_NUM = #{mnum} AND DEL_FLAG = 'n'
+		
+		]]>		
+	</select>
+	
+	<select id="selectddCount"
+			parameterType="hashmap"
+			resultType="int">
+		<![CDATA[
+			SELECT
+				COUNT(*)
+			FROM
+				day
+			WHERE
+				member_num = #{mnum} and diary_volum = #{dvol}
+				and del_flag = 'n';		
+		]]>		
+	</select>
+	
+	<select id="selectProgress"
+			parameterType="hashmap"
+			resultType="hashmap">
+		<![CDATA[
+			SELECT
+				MEMBER_NUM,
+				DIARY_VOLUM,
+				PERCENT
+			FROM
+				V_PROGRESS
+		]]>
+	</select>
+	
+	<select id="selectmProgress"
+			parameterType="hashmap"
+			resultType="hashmap">
+		<![CDATA[
+			SELECT
+				diary_volum,
+				percent
+			FROM
+				V_PROGRESS
+			WHERE
+				MEMBER_NUM = #{mnum} 
+		]]>
+	</select>
+	
+		
+	<select id="selectdProgress"
+			parameterType="hashmap"
+			resultType="double">
+		<![CDATA[
+			SELECT
+				percent
+			FROM
+				V_PROGRESS
+			WHERE
+				member_num = #{mnum} and diary_volum = #{dvol} 
+		]]>
+	</select>
+	
+	<select id="selectmDays"
+			parameterType="hashmap"
+			resultType="traveldiary.td.dto.DayDTO">
+	<![CDATA[
+			SELECT
+				*
+			FROM
+				DAY
+			WHERE
+				member_num= #{mnum} AND diary_volum= #{dvol}
+				and del_flag = 'n'
+	]]>		
+	</select>
+	
+		<select id="selectDayList"
+			parameterType="hashmap"
+			resultType="traveldiary.td.dto.DayDTO">
+	<![CDATA[
+			SELECT
+				*
+			FROM
+				DAY
+			WHERE
+				del_flag = 'n'
+			limit #{pnum}, #{cnum}
+	]]>		
+	</select>
+		
+	<select id="selectdRecount"
+			parameterType="hashmap"
+			resultType="hashmap">
+	<![CDATA[
+			SELECT
+				a.diary_volum,
+				b.day_num,
+				count(*) as count
+			FROM
+				day a join reply b
+			WHERE
+				a.member_num=#{mnum} AND a.diary_volum=#{dvol}
+				and a.day_num= b.day_num
+				and b.del_flag = 'n'
+				group by a.day_num
+	]]>		
+	</select>
+	
+	<select id="selectDay"
+			parameterType="integer"
+			resultType="traveldiary.td.dto.DayDTO">
+	<![CDATA[
+			SELECT
+				*
+			FROM
+				day
+			WHERE
+				day_num = #{dnum} and
+				del_flag = 'n'
+	]]>		
+	</select>
+	
+	<select id="selectindnum"
+			parameterType="traveldiary.td.dto.DayDTO"
+			resultType="integer">
+	<![CDATA[
+			SELECT
+				max(day_num)
+			FROM
+				day
+			WHERE
+				member_num = #{member_num} 
+				and diary_volum= #{diary_volum}
+				and del_flag = 'n'
+	]]>		
+	</select>
+	
+	<insert id="insertDay"
+			parameterType="traveldiary.td.dto.DayDTO">
+	<![CDATA[
+			insert into
+				day
+				(member_num, diary_volum, day_title, day, day_time, p_code)
+				value(#{member_num}, #{diary_volum}, #{day_title}, #{day}, #{day_time}, #{p_code})
+	]]>		
+	</insert>
+	
+	<update id="plusHits"
+			parameterType="integer">
+	<![CDATA[
+			update
+				day
+				set hits = hits+1
+			where
+				day_num = #{dnum} 
+				and del_flag = 'n'
+	]]>		
+	</update>
+	
+	<select id="getDiaryTotalCount"
+			resultType="integer" >
+	<![CDATA[
+			select
+				count(*)
+			from 
+				diary
+			where
+				del_flag = 'n'
+	]]>	
+	
+	</select>
+	
+	<select id="selectDiaryList"
+			parameterType="hashmap"
+			resultMap="diary">
+		<![CDATA[
+			SELECT
+				member_num,
+				diary_volum,
+				diary_title,
+				time,
+				start_day,
+				end_day,
+				location_code,
+				diary_cover,
+				p_code
+			FROM
+				DIARY
+			WHERE
+				del_flag = 'n'
+			LIMIT #{pnum}, #{cnum}
+		]]>		
+	</select>
+	
+	<select id="selectDiaryInfo"
+			parameterType="hashmap"
+			resultMap="diary">
+		<![CDATA[
+			SELECT
+				*
+			FROM
+				DIARY
+			WHERE
+				del_flag = 'n'
+				and member_num = #{mnum} and diary_volum = #{dvol}
+		]]>		
+	</select>
+	
+	<select id="selectLocation"
+			parameterType = "string"
+			resultType="string">
+		<![CDATA[
+			select
+				location
+			from 
+				location
+			where
+				location_code = #{l_code}
+		]]>		
+	</select>
+	
+	<select id="selectDayCount"
+			resultType="integer">
+		<![CDATA[
+			select
+				count(*)
+			from 
+				day
+			where
+				del_flag='n'
+		]]>		
+	</select>
+	
+	<select id="selectReCount"
+			parameterType="hashmap"
+			resultType="hashmap">
+		<![CDATA[
+				SELECT
+					a.day_num,
+					count(*) as count
+				FROM
+					day a join reply b
+				WHERE
+					a.day_num= b.day_num
+					and b.del_flag = 'n'
+					group by a.day_num
+		]]>		
+	</select>
+	
+	<select id="selectOneReCount"
+			parameterType="hashmap"
+			resultType="hashmap">
+		<![CDATA[
+				SELECT
+					count(*)
+				FROM
+					reply
+				WHERE
+					del_flag = 'n' and
+					day_num = #{dnum}
+		]]>		
+	</select>
+	
+	<select id="selectReplyList"
+			parameterType="hashmap"
+			resultType="traveldiary.td.dto.ReplyDTO">
+	<![CDATA[
+			select
+				b.member_id, 
+				a.*
+			from 
+				reply a,
+				member b
+			where
+				a.del_flag='n' and
+				a.member_num = b.member_num and
+				a.day_num = #{dnum}
+		]]>		
+	</select>
+	
+	<resultMap type="traveldiary.td.dto.DiaryDTO" id="diary">
+		<result property="member_num" column="MEMBER_NUM"/>
+		<result property="diary_volum" column="DIARY_VOLUM"/>
+		<result property="diary_title" column="DIARY_TITLE"/>
+		<result property="time" column="TIME"/>
+		<result property="start_day" column="START_DAY"/>
+		<result property="end_day" column="END_DAY"/>
+		<result property="loc_detail" column="LOC_DETAIL"/>
+		<result property="location_code" column="LOCATION_CODE"/>
+		<result property="diary_cover" column="DIARY_COVER"/>
+		<result property="p_code" column="P_CODE"/>
+	</resultMap>
+	
+	<resultMap type="traveldiary.td.dto.DayDTO" id="day">
+		<result property="member_num" column="member_num"/>
+		<result property="diary_volum" column="diary_volum"/>
+		<result property="member_num" column="member_num"/>
+		<result property="member_num" column="member_num"/>
+		<result property="member_num" column="member_num"/>
+		<result property="member_num" column="member_num"/>
+		<result property="member_num" column="member_num"/>
+		<result property="member_num" column="member_num"/>
+		<result property="member_num" column="member_num"/>
+	</resultMap>
+	
+	
+	
+</mapper>

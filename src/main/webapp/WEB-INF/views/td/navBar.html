@@ -1,0 +1,110 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    
+<!-- start: CSS -->
+<style type="text/css">
+*{margin:0px; padding:0px;}
+
+html, body{
+margin:0;
+padding:0;
+background-color:#fff;}
+
+
+.pagebox{
+	min-height: 100%; 
+	width: 100%; 
+	padding-top:50px;
+	overflow: visible;
+}
+
+#diary-wrapper{
+overflow: visible;
+}
+
+#day_table th, #day_table td{
+	text-align: center;
+}
+</style>
+	<!-- end: CSS -->
+	
+<script type="text/javascript">
+$(document).ready(function(){
+	
+	if($('#identify').val() == "member"){
+	  $('.navbar-right li:eq(0)').show();
+	 }
+	else{
+		$('.navbar-right li:eq(1)').show();
+		$('.navbar-right li:eq(2)').show();
+	}
+	});
+	
+</script>
+
+</head>
+<body>
+		
+	<!-- start : menu -->
+	<nav id="mainNav" class="navbar navbar-default navbar-fixed-top" >
+        <div class="container navbox" style="z-index:999; width:100%; background-color: #fff; position:fixed; 
+        top:0px; left:0px; padding-left:20px;">
+	            <div class="navbar-header " >
+	                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+	                    <span class="sr-only">Toggle navigation</span>
+						<span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span>
+	                </button>
+	                <a class="navbar-brand page-scroll" href="/TravelDiary">
+						TRAVEL DIARY
+						<span class="glyphicon glyphicon-plane" aria-hidden="true"></span>
+					</a>
+	            </div>
+	            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1"
+	            style="float:left; margin-top:10px">
+	                <ul class="nav navbar-nav navbar-left">
+	                    <li>
+	                        <a class="page-scroll" href="/TravelDiary/td/mydiary.do">MY DIARY</a>
+	                    </li>
+	                    <li>
+	                        <a class="page-scroll" href="/TravelDiary/td/days.do">DAYS</a>
+	                    </li>
+	                    <li>
+	                        <a class="page-scroll" href="/TravelDiary/td/mypage.do">MY PAGE</a>
+	                    </li>
+	                </ul>
+	                <ul class="nav navbar-nav navbar-right">
+	               		<li  style="display:none;">
+	                    	<a href="/TravelDiary/td/logout.do">LOG OUT</a>
+	                    </li>
+	                    <li  style="display:none;">
+	                    	<a href="/TravelDiary/td/login.do">LOG IN</a>
+	                    </li>
+	                    <li  style="display:none;">
+	                    	<a onclick="/TravelDiary/td/join.do">JOIN</a>
+	                    </li>
+	                </ul>
+	            </div>
+	            
+        </div>
+    </nav>
+    <!-- end : menu -->
+    
+<script type="text/javascript">
+
+function logout(){
+	var result = window.confirm('가니?');
+	
+	if(result){
+		window.location='Logout.jsp';
+	}else{}
+}
+</script>
+
+
+
+
+
+
+</body>
+</html>
